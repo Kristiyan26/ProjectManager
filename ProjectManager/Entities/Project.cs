@@ -16,7 +16,7 @@ namespace ProjectManager.Entities
 
 
         [ForeignKey("OwnerId")]
-        public User Owner {get;set;}
+        public User Ownerrrr {get;set;}
 
     }
 }
