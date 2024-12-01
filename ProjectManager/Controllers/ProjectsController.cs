@@ -126,5 +126,57 @@ namespace ProjectManager.Controllers
 
             return RedirectToAction("Index", "Projects");
         }
+
+        [HttpGet]
+        public IActionResult Share (int id)
+        { 
+
+            ProjectManagerDbContext context = new ProjectManagerDbContext();
+              
+            ShareVM model = new ShareVM();
+
+            model.Project = context.Projects.Where(p => p.Id == id).FirstOrDefault();
+
+            model.Shares = context.UserToProjects.Where(i=>i.ProjectId == id).ToList();
+
+            List<int> usersSharedList = model.Shares.Select(i=>i.UserId).ToList();
+
+            usersSharedList.Add(model.Project.OwnerId);
+
+            model.Users=context.Users.Where(i=>!usersSharedList.Contains(i.Id)).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Share(ShareVM model)
+        {
+            ProjectManagerDbContext context  = new ProjectManagerDbContext();
+
+            foreach(var userId in model.UserIds)
+            {
+                UserToProject item = new UserToProject();
+                item.UserId = userId;
+                item.ProjectId = model.ProjectId;
+
+                context.UserToProjects.Add(item);
+                context.SaveChanges();
+            }
+
+            return RedirectToAction("Share", "Projects", new { Id = model.ProjectId });
+        }
+
+        [HttpGet]
+        public IActionResult RevokeShare(int id)
+        {
+            ProjectManagerDbContext context = new ProjectManagerDbContext();
+
+            UserToProject item = context.UserToProjects.Where(i=>i.Id == id).FirstOrDefault();
+
+            context.UserToProjects.Remove(item);
+            context.SaveChanges();
+
+            return RedirectToAction("Share", "Projects", new { id = item.ProjectId });   
+        }
     }
 }

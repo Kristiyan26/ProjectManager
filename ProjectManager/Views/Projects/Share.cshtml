@@ -1,0 +1,60 @@
+﻿@model ProjectManager.ViewModels.Projects.ShareVM
+@using ProjectManager.Entities
+
+@{
+    this.Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["title"] = "SHARE PROJECTS";
+}
+
+<hr/>
+<h2> Share @Model.Project.Title</h2>
+<hr/>
+
+
+<div class="grid">
+    <form asp-controller="Projects" asp-action="Share">
+        <input type="hidden" name="ProjectId" value="@Model.Project.Id"/>
+    @(Model.Users.Count <= 0 ? "No users to share with" : " ")
+    @foreach (User item in Model.Users)
+    {
+        
+      <div class="row">
+        <div class="col-3">
+            <input type="checkbox" name="UserIds" value="@item.Id" />
+            <span>@item.Username (@item.FirstName @item.LastName)</span>
+        </div>
+       </div>
+     }
+     <div class="row">
+         <div class="col-2">
+             <input type="submit" name="name" value="Share" />
+         </div>
+     </div> 
+
+    </form>
+    <hr/>
+
+    <h2>Shared with:</h2>
+    <hr/>
+    <div class="row">
+        <div class="col-2">Username</div>
+        <div class="col-2">First Name</div>
+        <div class="col-2">Last Name</div>
+    </div>
+    @foreach (UserToProject item in Model.Shares)
+    {
+        <div class="row">
+            <div class="col-2">@item.User.Username</div>
+            <div class="col-2">@item.User.FirstName</div>
+            <div class="col-2">@item.User.LastName</div>
+             
+
+            <div class="col-2">
+                <a asp-controller="Projects" asp-action="RevokeShare" asp-route-id="@item.Id">revoke</a>
+               
+            </div>
+        </div>
+
+    }
+
+</div>

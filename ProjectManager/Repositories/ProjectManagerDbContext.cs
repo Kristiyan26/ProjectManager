@@ -6,7 +6,7 @@ namespace ProjectManager.Repositories
     public class ProjectManagerDbContext : DbContext
     {
         public DbSet<User> Users {  get; set; }
-        public DbSet<Project> Projects { get; set; }
+        public DbSet<Project> Projects { get; set; } 
 
         public DbSet<UserToProject> UserToProjects { get; set; } 
         public ProjectManagerDbContext()
@@ -18,7 +18,8 @@ namespace ProjectManager.Repositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlServer("Server=localhost;Database=ProjectManagerDB;Trusted_Connection=True;TrustServerCertificate=true");
+                .UseSqlServer("Server=localhost;Database=ProjectManagerDB;Trusted_Connection=True;TrustServerCertificate=true")
+                .UseLazyLoadingProxies();   
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
