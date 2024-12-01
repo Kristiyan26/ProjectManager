@@ -1,0 +1,54 @@
+﻿@model ProjectManager.ViewModels.Projects.EditVM
+
+
+
+<fieldset>
+
+    <legend>EDIT PROJECT</legend>
+
+
+    <form asp-action="Edit" asp-controller="Projects" method="post">
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.OwnerId)
+        <div class="grid">
+            <div class="row">
+                <div class="col-1">
+                    @Html.LabelFor(m => m.Title)
+                </div>
+                <div class="col-2">
+                    @Html.TextBoxFor(m => m.Title)
+                </div>
+                <div class="col-2">
+
+                    @Html.ValidationMessageFor(m => m.Title)
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    @Html.LabelFor(m => m.Description)
+                </div>
+                <div class="col-2">
+                    @Html.TextAreaFor(m => m.Description)
+                </div>
+                <div class="col-2">
+
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    @Html.ValidationMessage("summaryError")
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-2">
+                    <a asp-action="Index" asp-controller="Projects">Back</a>
+                    <input type="submit" class="right btn btn-primary" value="Edit" />
+                </div>
+            </div>
+        </div>
+    </form>
+</fieldset>
+

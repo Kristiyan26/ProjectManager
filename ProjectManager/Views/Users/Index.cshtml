@@ -1,0 +1,34 @@
+﻿@model ProjectManager.ViewModels.Users.IndexVM
+@using ProjectManager.Entities
+
+@{
+    this.Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["title"] = "USERS"; 
+}
+
+
+<a asp-controller="Users" asp-action="Create">NEW</a>
+
+<div class="grid">
+    <div class="row">
+        <div class="col-1">Username</div>
+        <div class="col-2">First Name</div>
+        <div class="col-2">Last Name</div>
+        <div class="col-2"></div>
+    </div>  
+    @foreach (User item in Model.Items)
+    {
+        <div class="row">
+            <div class="col-1">@item.Username</div>
+            <div class="col-2">@item.FirstName</div>
+            <div class="col-2">@item.LastName</div>
+            <div class="col-2">
+                <a asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id"   >Delete</a>
+                <a asp-controller="Users" asp-action="Edit" asp-route-id="@item.Id" >Edit</a>
+                
+            </div>
+        </div>
+        
+    }
+
+</div>

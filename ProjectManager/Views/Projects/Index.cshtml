@@ -1,0 +1,29 @@
+﻿@model ProjectManager.ViewModels.Projects.IndexVM
+@using ProjectManager.Entities
+
+@{
+    this.Layout = "/Views/Shared/_Site.cshtml";
+    ViewData["title"] = "PROJECTS";
+}
+
+
+<a asp-controller="Projects" asp-action="Create">NEW</a>
+
+<div class="grid">
+    <div class="row">
+        <div class="col-3">Project Name</div>
+        <div class="col-2"></div>
+    </div>
+    @foreach (Project item in Model.Projects)
+    {
+        <div class="row">
+            <div class="col-3">@item.Title</div>
+            <div class="col-2">
+                <a asp-controller="Projects" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-controller="Projects" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </div>
+        </div>
+
+    }
+
+</div>
