@@ -20,6 +20,8 @@ namespace ProjectManager.Controllers
          
             model.Projects = context.Projects.Where(p=>p.OwnerId ==loggedUser.Id ).ToList();
 
+            model.Projects.AddRange(context.UserToProjects.Where(i=>i.UserId == loggedUser.Id)
+                .Select(i=>i.Project).ToList());
 
             return View(model);
         }
