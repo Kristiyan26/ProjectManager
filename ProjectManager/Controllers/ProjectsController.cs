@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Design;
 using ProjectManager.ActionFilters;
 using ProjectManager.Entities;
 using ProjectManager.ExtentionMethods;
@@ -133,17 +134,26 @@ namespace ProjectManager.Controllers
         public IActionResult Share (int id)
         { 
 
-            ProjectManagerDbContext context = new ProjectManagerDbContext();
+            ProjectManagerDbContext context = new ProjectManagerDbContext(); 
               
             ShareVM model = new ShareVM();
 
+
+            // find the project from the database
             model.Project = context.Projects.Where(p => p.Id == id).FirstOrDefault();
 
+            //find the shares from the database 
             model.Shares = context.UserToProjects.Where(i=>i.ProjectId == id).ToList();
 
+
+            //store the id's of the usesrs that have accsess to the project
             List<int> usersSharedList = model.Shares.Select(i=>i.UserId).ToList();
 
+            //add the owner of the project 
             usersSharedList.Add(model.Project.OwnerId);
+
+            //Finding the users that are avaiable to share to (dont have accsess to the project yet)
+            //and asigning them to the model.
 
             model.Users=context.Users.Where(i=>!usersSharedList.Contains(i.Id)).ToList();
 
@@ -154,7 +164,9 @@ namespace ProjectManager.Controllers
         public IActionResult Share(ShareVM model)
         {
             ProjectManagerDbContext context  = new ProjectManagerDbContext();
-
+            
+  
+            //Creating a link between each selected user and the project
             foreach(var userId in model.UserIds)
             {
                 UserToProject item = new UserToProject();
@@ -173,8 +185,11 @@ namespace ProjectManager.Controllers
         {
             ProjectManagerDbContext context = new ProjectManagerDbContext();
 
+            //finding the User that has accsess to the project.
             UserToProject item = context.UserToProjects.Where(i=>i.Id == id).FirstOrDefault();
 
+
+            //revoking his accsess
             context.UserToProjects.Remove(item);
             context.SaveChanges();
 

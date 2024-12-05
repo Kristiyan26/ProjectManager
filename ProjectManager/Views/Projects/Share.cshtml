@@ -15,7 +15,7 @@
     <form asp-controller="Projects" asp-action="Share">
         <input type="hidden" name="ProjectId" value="@Model.Project.Id"/>
     @(Model.Users.Count <= 0 ? "No users to share with" : " ")
-    @foreach (User item in Model.Users)
+    @foreach (User item in Model.Users) // listing the users that we HAVEN'T SHARED the project with.
     {
         
       <div class="row">
@@ -41,7 +41,7 @@
         <div class="col-2">First Name</div>
         <div class="col-2">Last Name</div>
     </div>
-    @foreach (UserToProject item in Model.Shares)
+    @foreach (UserToProject item in Model.Shares) //listing the users that we have ALREADY SHARED the project witj
     {
         <div class="row">
             <div class="col-2">@item.User.Username</div>
